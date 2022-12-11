@@ -35,12 +35,29 @@ const resolvers = {
             return { token, user };
         },
         bookSave: async (parent, { newBook }) => {
-            const userUpdate = await User.findOneAndUpdate(
-              { _id: context.user._id },
-              { $push: { bookSaves: newBook } },
-              { new: true }
-            );
-            return userUpdate;
+            if (context.user) {
+                const userUpdate = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { bookSaves: newBook } },
+                    { new: true }
+                );
+                return userUpdate;
+            }
+            throw new AuthenticationError('You must be logged in for this action');
+        },
+        removeBook: async (parent, { bookId }, context) => {
+            if (context.user) {
+              const userUpdate = await User.findOneAndUpdate(
+                { _id: context.user._id },
+                {
+                  $push: {bookSaves: {bookId}}
+                },
+                {new : true}
+              );
+            }
+            throw new AuthenticationError('You must be logged in for this action');
           },
     }
 }
+
+module.exports = resolvers;
