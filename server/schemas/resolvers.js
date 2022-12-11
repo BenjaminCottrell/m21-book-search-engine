@@ -34,11 +34,11 @@ const resolvers = {
 
             return { token, user };
         },
-        bookSave: async (parent, { newBook }) => {
+        saveBook: async (parent, { newBook }) => {
             if (context.user) {
                 const userUpdate = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $push: { bookSaves: newBook } },
+                    { $push: { savedBooks: newBook } },
                     { new: true }
                 );
                 return userUpdate;
@@ -50,10 +50,11 @@ const resolvers = {
               const userUpdate = await User.findOneAndUpdate(
                 { _id: context.user._id },
                 {
-                  $push: {bookSaves: {bookId}}
+                  $push: {savedBooks: {bookId}}
                 },
                 {new : true}
               );
+              return userUpdate;
             }
             throw new AuthenticationError('You must be logged in for this action');
           },
