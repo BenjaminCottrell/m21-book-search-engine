@@ -19,7 +19,7 @@ const typeDefs = gql`
   }
 
   type Auth {
-    token: ID
+    token: ID!
     user: User
   }
 
@@ -37,7 +37,7 @@ const typeDefs = gql`
       link: String!, 
       title: String!
     ): User
-    removeBook(bookId: ID!): User
+    removeBook(bookId: String!): User
   }
   `;
 
